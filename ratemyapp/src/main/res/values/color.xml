@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorDialogHeader">#22a6b3</color>
-    <color name="colorLightGray">#ecf0f1</color>
-    <color name="colorMidGray">#636e72</color>
-    <color name="colorDarkBlue">#2f3640</color>
-    <color name="colorMidGreen">#00b894</color>
-    <color name="colorDarkRed">#d63031</color>
+    <color name="mcolorDialogHeader">#22a6b3</color>
+    <color name="mcolorLightGray">#ecf0f1</color>
+    <color name="mcolorMidGray">#636e72</color>
+    <color name="mcolorDarkBlue">#2f3640</color>
+    <color name="mcolorMidGreen">#00b894</color>
+    <color name="mcolorDarkRed">#d63031</color>
 </resources>
