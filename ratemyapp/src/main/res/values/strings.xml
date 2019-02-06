@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">RateMyApp</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="mhello_blank_fragment">Hello blank fragment</string>
     <string name="mrate_this_app">Rate This app</string>
     <string name="mrate_message">If you enjoy this app please take a moment and rate us.</string>

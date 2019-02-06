@@ -2,6 +2,7 @@ package ir.kivee.ratemyapp
 
 import android.content.Context
 import android.os.Bundle
+import android.util.LayoutDirection
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -51,7 +52,7 @@ class RateFragment : BottomSheetDialogFragment() {
         ratePositive.text=positiveButtonText
         rateNegative.text=negativeButtonText
         rateCancel.text=cancelButtonText
-
+        rateButtonContainer.layoutDirection=View.LAYOUT_DIRECTION_RTL
         ratePositive.setOnClickListener {
             listener?.onPositiveClick()
             dismiss()
