@@ -1,26 +1,8 @@
-apply plugin: 'com.novoda.bintray-release'
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
-
-
-
-publish {
-
-    def groupProjectID = '{package_name}'
-    def artifactProjectID = '{name_of_your_library}'
-    def publishVersionID = 'library_version_code'
-
-    userOrg = '{username_of_bintray}'
-    repoName = 'repository_name'
-    groupId = groupProjectID
-    artifactId = artifactProjectID
-    publishVersion = publishVersionID
-    desc = '{library description}'
-    website = '{github_url}
-
-}
-
+group='com.github.p4yam'
 android {
     compileSdkVersion 28
 
@@ -30,7 +12,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
-        versionName "1.0"
+        versionName "0.1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
