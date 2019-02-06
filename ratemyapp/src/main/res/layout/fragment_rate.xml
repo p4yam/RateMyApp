@@ -35,28 +35,34 @@
             android:layout_marginTop="@dimen/rmdp_16"
             android:orientation="horizontal">
 
-        <TextView
+        <com.google.android.material.button.MaterialButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:gravity="center"
+                android:layout_margin="3dp"
                 android:fontFamily="@font/vazir"
                 android:textColor="@color/mcolorMidGreen"
                 android:id="@+id/ratePositive"/>
-        <TextView
+        <com.google.android.material.button.MaterialButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_margin="3dp"
                 android:fontFamily="@font/vazir"
                 android:gravity="center"
                 android:textColor="@color/mcolorMidGray"
                 android:id="@+id/rateNegative"/>
 
 
-        <TextView
+        <com.google.android.material.button.MaterialButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/rateCancel"
+                android:layout_margin="3dp"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:gravity="center"
                 android:layout_weight="1"
                 android:fontFamily="@font/vazir"

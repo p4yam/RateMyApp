@@ -1,21 +1,26 @@
 package ir.kivee.ratemyapp
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
+import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.FragmentActivity
 
 
-class RateMyApp(
-    private val ctx: Activity
-) {
+class RateMyApp(private val ctx: Activity){
+
+
 
     fun showWhenReady(
-        title: String,
-        message: String,
-        positiveButtonText: String = "Rate Now",
-        negativeButtonText: String = "No thanks",
-        cancelButtonText: String = "Maybe later",
-        launchInterval: Int = 5,
-        dayInterval: Int = 5
+            title: String,
+            message: String,
+            positiveButtonText: String = "Rate Now",
+            negativeButtonText: String = "No thanks",
+            cancelButtonText: String = "Maybe later",
+            launchInterval: Int = 5,
+            dayInterval: Int = 5
     ) {
         val prefs = ctx.getSharedPreferences("ratemyapp", 0)
         if (prefs.getBoolean("dontshowagain", false)) {
@@ -37,7 +42,7 @@ class RateMyApp(
 
         if (launchCount >= launchInterval) {
             if (System.currentTimeMillis() >= dateFirstLaunch +
-                (dayInterval * 24 * 60 * 60 * 1000)
+                    (dayInterval * 24 * 60 * 60 * 1000)
             ) {
 
                 showNow(title, message, positiveButtonText, negativeButtonText, cancelButtonText)
@@ -49,39 +54,30 @@ class RateMyApp(
 
 
     fun showNow(
-        title: String,
-        message: String,
-        positiveButtonText: String,
-        negativeButtonText: String,
-        cancelButtonText: String
+            title: String,
+            message: String,
+            positiveButtonText: String,
+            negativeButtonText: String,
+            cancelButtonText: String
     ) {
         val fragmentManager = (ctx as FragmentActivity).supportFragmentManager
         val bottomSheet =
-            RateFragment.newInstance(
-                title
-                , message
-                , positiveButtonText
-                , negativeButtonText
-                , cancelButtonText
-            )
+                RateFragment()
+        val bundle = Bundle()
+        with(bundle) {
+            putString("packageName", ctx.applicationContext.packageName)
+            putString("title", title)
+            putString("message", message)
+            putString("positiveButtonText", positiveButtonText)
+            putString("negativeButtonText", negativeButtonText)
+            putString("cancelButtonText", cancelButtonText)
+        }
+        bottomSheet.arguments = bundle
         bottomSheet.show(fragmentManager, "rateMyApp")
     }
 
 
-    fun dontShowAgain() {
-        val prefs = ctx.getSharedPreferences("ratemyapp", 0)
-        val editor = prefs.edit()
-        editor.clear()
-        editor.putBoolean("dontshowagain", true)
-        editor.apply()
-    }
 
-    fun showLater() {
-        val prefs = ctx.getSharedPreferences("ratemyapp", 0)
-        val editor = prefs.edit()
-        editor.clear()
-        editor.putLong("launch_count", 0)
-        editor.putLong("date_firstlaunch", 0)
-        editor.apply()
-    }
+
+
 }

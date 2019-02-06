@@ -1,9 +1,10 @@
 package ir.kivee.ratemyapp
 
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.util.LayoutDirection
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,107 +12,76 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.fragment_rate.*
 
 
-private const val ARG_TITLE = "title"
-private const val ARG_MESSAGE = "message"
-private const val ARG_YES_TEXT = "yesBtn"
-private const val ARG_NO_TEXT = "noBtn"
-private const val ARG_CANCEL_TEXT = "cancelBtn"
-
-
 class RateFragment : BottomSheetDialogFragment() {
 
-    private var title: String? = null
-    private var message: String? = null
-    private var positiveButtonText: String? = null
-    private var negativeButtonText: String? = null
-    private var cancelButtonText: String? = null
-    private var listener: OnRatingClickListener? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            title = it.getString(ARG_TITLE)
-            message = it.getString(ARG_MESSAGE)
-            positiveButtonText = it.getString(ARG_YES_TEXT)
-            negativeButtonText = it.getString(ARG_NO_TEXT)
-            cancelButtonText = it.getString(ARG_CANCEL_TEXT)
-        }
-    }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_rate, container, false)
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_rate, container, false)
+    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("p4yam",title)
-        rateHeader.text=title
-        rateMessage.text=message
-        ratePositive.text=positiveButtonText
-        rateNegative.text=negativeButtonText
-        rateCancel.text=cancelButtonText
-        rateButtonContainer.layoutDirection=View.LAYOUT_DIRECTION_RTL
+        rateHeader.text = arguments?.getString("title")
+        rateMessage.text = arguments?.getString("message")
+        ratePositive.text = arguments?.getString("positiveButtonText")
+        rateNegative.text = arguments?.getString("negativeButtonText")
+        rateCancel.text = arguments?.getString("cancelButtonText")
+        rateButtonContainer.layoutDirection = View.LAYOUT_DIRECTION_RTL
+
         ratePositive.setOnClickListener {
-            listener?.onPositiveClick()
+            rateApp(context!!)
+            dontShowAgain()
             dismiss()
         }
 
         rateNegative.setOnClickListener {
-            listener?.onNegativeClick()
+            dontShowAgain()
             dismiss()
         }
+
 
         rateCancel.setOnClickListener {
-            listener?.onCancelClick()
+            showLater()
             dismiss()
         }
 
     }
 
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
+    private fun rateApp(ctx: Context) {
+        val uri = Uri.parse("market://details?id=${ctx.applicationContext.packageName}")
+        val goToMarket = Intent(Intent.ACTION_VIEW, uri)
 
-        if (context is OnRatingClickListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnRatingClickListener")
+        goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY or
+                Intent.FLAG_ACTIVITY_NEW_DOCUMENT or
+                Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
+        try {
+            ctx.startActivity(goToMarket)
+        } catch (e: ActivityNotFoundException) {
+            ctx.startActivity(Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://play.google.com/store/apps/details?id=${ctx.applicationContext.packageName}")))
         }
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
+
+    fun dontShowAgain() {
+        val prefs = context!!.getSharedPreferences("ratemyapp", 0)
+        val editor = prefs.edit()
+        editor.clear()
+        editor.putBoolean("dontshowagain", true)
+        editor.apply()
     }
 
-    interface OnRatingClickListener {
-        fun onPositiveClick()
-        fun onNegativeClick()
-        fun onCancelClick()
-    }
-
-    companion object {
-
-        @JvmStatic
-        fun newInstance(
-            title: String
-            , message: String
-            , positiveButtonText: String
-            , negativeButtonText: String
-            , cancelButtonText: String
-        ) =
-            RateFragment().apply {
-
-                arguments = Bundle().apply {
-                    putString(ARG_TITLE, title)
-                    putString(ARG_MESSAGE, message)
-                    putString(ARG_YES_TEXT, positiveButtonText)
-                    putString(ARG_NO_TEXT, negativeButtonText)
-                    putString(ARG_CANCEL_TEXT, cancelButtonText)
-
-                }
-            }
+    fun showLater() {
+        val prefs = context!!.getSharedPreferences("ratemyapp", 0)
+        val editor = prefs.edit()
+        editor.clear()
+        editor.putLong("launch_count", 0)
+        editor.putLong("date_firstlaunch", 0)
+        editor.apply()
     }
 }
