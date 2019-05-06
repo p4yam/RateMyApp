@@ -23,6 +23,7 @@
     <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="16sp"
             android:id="@+id/rateMessage"
             android:textColor="@color/mcolorDarkBlue"
             android:layout_margin="@dimen/rmdp_16"

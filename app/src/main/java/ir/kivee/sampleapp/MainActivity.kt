@@ -12,13 +12,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         RateMyApp(this).showWhenReady(
-            "امتیاز به ما",
-            "همین حالا به اپ تیگو ۵ ستاره بده و با دریافت ۴۰۰ امتیاز شانس خودت رو برای دریافت جایزه افزایش بده",
-            "باشه",
-            "نه",
-            "بعدا",
-            3,
-            0
+            launchInterval = 2,
+            dayInterval = 0
         )
     }
 }
